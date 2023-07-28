@@ -31,7 +31,7 @@
     <properties>
         <!-- Build properties -->
         <maven.version>3.3.9</maven.version>
-        <java.version>11</java.version>
+        <java.version>8</java.version>
         <node.version>v14.15.0</node.version>
         <npm.version>7.6.0</npm.version>
 
@@ -787,7 +787,7 @@
                         <artifactId>frontend-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>install node and npm</id>
+                                <id>update node and npm</id>
                                 <goals>
                                     <goal>install-node-and-npm</goal>
                                 </goals>
