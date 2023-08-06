@@ -1,34 +1,21 @@
-<!-- jhcc-custom begin -->
 <template>
-  <b-navbar toggleable="md" type="dark" class="bg-primary" data-cy="navbar">
-    <b-row>
-      <div class="jh-logo-container" my-auto>
-        <div class="icon-sidebar" id="sidebar-icon" exact v-if="hasAnyAuthority('ROLE_ADMIN')">
-          <div v-b-toggle.sidebar-footer>
-            <b-button variant="outline-primary">
-              <font-awesome-icon class="fa-lg" icon="ellipsis-v" />
-              <font-awesome-icon class="fa-lg" icon="ellipsis-v" />
-            </b-button>
-          </div>
-        </div>
-        <b-navbar-brand class="logo" b-link to="/">
-          <span class="logo-img"></span>
-          <span class="navbar-title"><span class="jhipster-title">JHipster</span> Control Center</span>
-          <span class="navbar-version">{{ version }}</span>
-        </b-navbar-brand>
-        <b-navbar-toggle
-          right
-          class="jh-navbar-toggler d-lg-none"
-          href="javascript:void(0);"
-          data-toggle="collapse"
-          target="header-tabs"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <font-awesome-icon icon="bars" />
-        </b-navbar-toggle>
-      </div>
-    </b-row>
+  <b-navbar data-cy="navbar" toggleable="md" type="dark" class="bg-dark">
+    <b-navbar-brand class="logo" b-link to="/">
+      <span class="logo-img"></span>
+      <span class="navbar-title">jhipsterControlCenter</span> <span class="navbar-version">{{ version }}</span>
+    </b-navbar-brand>
+    <b-navbar-toggle
+      right
+      class="jh-navbar-toggler d-lg-none"
+      href="javascript:void(0);"
+      data-toggle="collapse"
+      target="header-tabs"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <font-awesome-icon icon="bars" />
+    </b-navbar-toggle>
+
     <b-collapse is-nav id="header-tabs">
       <b-navbar-nav class="ml-auto">
         <b-nav-item to="/" exact>
@@ -37,6 +24,48 @@
             <span>Home</span>
           </span>
         </b-nav-item>
+        <b-nav-item-dropdown right id="entity-menu" v-if="authenticated" active-class="active" class="pointer" data-cy="entity">
+          <span slot="button-content" class="navbar-dropdown-menu">
+            <font-awesome-icon icon="th-list" />
+            <span class="no-bold">Entities</span>
+          </span>
+          <entities-menu></entities-menu>
+          <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
+        </b-nav-item-dropdown>
+        <b-nav-item-dropdown
+          right
+          id="admin-menu"
+          v-if="hasAnyAuthority('ROLE_ADMIN') && authenticated"
+          :class="{ 'router-link-active': subIsActive('/admin') }"
+          active-class="active"
+          class="pointer"
+          data-cy="adminMenu"
+        >
+          <span slot="button-content" class="navbar-dropdown-menu">
+            <font-awesome-icon icon="users-cog" />
+            <span class="no-bold">Administration</span>
+          </span>
+          <b-dropdown-item to="/admin/metrics" active-class="active">
+            <font-awesome-icon icon="tachometer-alt" />
+            <span>Metrics</span>
+          </b-dropdown-item>
+          <b-dropdown-item to="/admin/health" active-class="active">
+            <font-awesome-icon icon="heart" />
+            <span>Health</span>
+          </b-dropdown-item>
+          <b-dropdown-item to="/admin/configuration" active-class="active">
+            <font-awesome-icon icon="cogs" />
+            <span>Configuration</span>
+          </b-dropdown-item>
+          <b-dropdown-item to="/admin/logs" active-class="active">
+            <font-awesome-icon icon="tasks" />
+            <span>Logs</span>
+          </b-dropdown-item>
+          <b-dropdown-item v-if="openAPIEnabled" to="/admin/docs" active-class="active">
+            <font-awesome-icon icon="book" />
+            <span>API</span>
+          </b-dropdown-item>
+        </b-nav-item-dropdown>
         <b-nav-item-dropdown
           right
           href="javascript:void(0);"
@@ -69,39 +98,16 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 /* ==========================================================================
-Navbar
-========================================================================== */
-
-/* jhcc-custom */
-.navbar {
-  min-height: 4rem;
-  padding: 0.5rem !important;
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  justify-content: start;
-}
-
-/* ==========================================================================
-    Title
+    Navbar
     ========================================================================== */
-
-.navbar-title {
-  display: inline-block;
-  vertical-align: middle;
-  font-family: Pacifico, cursive;
-  font-weight: lighter;
-}
-
-.jhipster-title {
-  font-size: larger;
-}
-
 .navbar-version {
   font-size: 10px;
-  vertical-align: sub;
+}
+
+@media screen and (min-width: 768px) {
+  .jh-navbar-toggler {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 768px) and (max-width: 1150px) {
@@ -109,26 +115,10 @@ Navbar
     display: none;
   }
 }
-@media screen and (max-width: 768px) {
-  .jh-logo-container {
-    width: 100%;
-  }
-}
 
-.navbar-dark button {
-  color: white;
-}
-
-.header-tabs {
-  position: absolute;
-  right: 1rem;
-  line-height: 1.5;
-  margin-top: 10px;
-}
-
-.icon-sidebar {
+.navbar-title {
   display: inline-block;
-  margin-left: 10px;
+  vertical-align: middle;
 }
 
 /* ==========================================================================
@@ -153,4 +143,3 @@ Navbar
   filter: drop-shadow(0 0 0.05rem white);
 }
 </style>
-<!-- jhcc-custom end -->

@@ -1,5 +1,4 @@
 import Vuex from 'vuex';
-import { setupAxiosInterceptors } from '@/shared/config/axios-interceptor';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons/faArrowLeft';
@@ -36,18 +35,9 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes';
 import { faTrash } from '@fortawesome/free-solid-svg-icons/faTrash';
 import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons/faUserPlus';
+import { faUsers } from '@fortawesome/free-solid-svg-icons/faUsers';
+import { faUsersCog } from '@fortawesome/free-solid-svg-icons/faUsersCog';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
-// jhcc-custom begin
-import { faSitemap } from '@fortawesome/free-solid-svg-icons/faSitemap';
-import { faCube } from '@fortawesome/free-solid-svg-icons/faCube';
-import { faChartLine } from '@fortawesome/free-solid-svg-icons/faChartLine';
-import { faAngleDoubleLeft } from '@fortawesome/free-solid-svg-icons/faAngleDoubleLeft';
-import { faEllipsisV } from '@fortawesome/free-solid-svg-icons/faEllipsisV';
-import { faPowerOff } from '@fortawesome/free-solid-svg-icons/faPowerOff';
-import { faIndent } from '@fortawesome/free-solid-svg-icons/faIndent';
-import { faLayerGroup } from '@fortawesome/free-solid-svg-icons/faLayerGroup';
-import { faTrashAlt } from '@fortawesome/free-solid-svg-icons/faTrashAlt';
-// jhcc-custom end
 
 import VueCookie from 'vue-cookie';
 import Vuelidate from 'vuelidate';
@@ -55,16 +45,11 @@ import Vue2Filters from 'vue2-filters';
 
 import * as filters from '@/shared/date/filters';
 import { accountStore } from '@/shared/config/store/account-store';
-// jhcc-custom begin
-import { refreshStore } from '@/shared/config/store/refresh-store';
-import { routesStore } from '@/shared/config/store/routes-store';
-// jhcc-custom end
 
 export function initVueApp(vue) {
   vue.use(VueCookie);
   vue.use(Vuelidate);
   vue.use(Vue2Filters);
-  setupAxiosInterceptors(() => console.log('Unauthorized!'));
   filters.initFilters();
 }
 
@@ -104,19 +89,9 @@ export function initFortAwesome(vue) {
     faTrash,
     faUser,
     faUserPlus,
-    faWrench,
-    // jhcc-custom begin
-    faAngleDoubleLeft,
-    faChartLine,
-    faWrench,
-    faSitemap,
-    faCube,
-    faEllipsisV,
-    faPowerOff,
-    faIndent,
-    faLayerGroup,
-    faTrashAlt
-    // jhcc-custom end
+    faUsers,
+    faUsersCog,
+    faWrench
   );
 }
 
@@ -125,10 +100,6 @@ export function initVueXStore(vue) {
   return new Vuex.Store({
     modules: {
       accountStore,
-      // jhcc-custom begin
-      refreshStore,
-      routesStore,
-      // jhcc-custom end
     },
   });
 }

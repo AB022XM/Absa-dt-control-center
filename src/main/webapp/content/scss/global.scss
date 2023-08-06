@@ -89,28 +89,11 @@ Generic styles
 
 /* other generic styles */
 
-// jhcc-custom
 .jh-card {
   padding: 1.5%;
   margin-top: 20px;
   border: none;
   background: inherit;
-  margin-left: 200px;
-  width: 100%;
-}
-
-// jhcc-custom
-@media screen and (max-width: 767px) {
-  .jh-card {
-    margin-left: 20px;
-  }
-}
-
-// jhcc-custom
-@media screen and (min-width: 768px) and (max-width: 1150px) {
-  .jh-card {
-    margin-left: 90px;
-  }
 }
 
 .error {
@@ -140,22 +123,13 @@ Generic styles
   opacity: 1;
 }
 
+.footer {
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+}
+
 .hand,
 [jhisortby] {
   cursor: pointer;
-}
-
-/* ==========================================================================
-App footer
-========================================================================== */
-
-// jhcc-custom
-.footer {
-  border-top: 1px solid rgba(0, 0, 0, 0.125);
-  bottom: 0;
-  width: 99%;
-  height: 60px;
-  display: block;
 }
 
 /* ==========================================================================
@@ -284,60 +258,5 @@ ui bootstrap tweaks
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
-// jhcc-custom begin
-
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Pacifico&display=swap');
-
-/* ==========================================================================
-Sidebar
-========================================================================== */
-
-.b-sidebar {
-  padding-top: 70px;
-  width: auto;
-  .b-sidebar-body {
-    height: calc(100% - 70px);
-    overflow: hidden;
-  }
-}
-
-.b-sidebar-outer {
-  z-index: 900;
-}
-
-.b-sidebar .btn {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.b-sidebar {
-  .nav-link {
-    color: rgba(255, 255, 255, 0.75);
-    &:hover {
-      color: white;
-    }
-    &:focus {
-      color: white;
-    }
-  }
-  .disabled {
-    color: rgb(119, 119, 119);
-  }
-  .none {
-    cursor: none;
-  }
-}
-
-.b-sidebar-body .hipster.img-fluid {
-  display: inline-block;
-  width: 150px;
-  max-height: 200px;
-  background: url('../images/jhipster_family_member_3.svg') no-repeat center bottom;
-  background-size: contain;
-  margin-bottom: 20px;
-}
-
-// jhcc-custom end
 
 /* jhipster-needle-scss-add-main JHipster will add new css style */

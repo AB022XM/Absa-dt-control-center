@@ -7,13 +7,8 @@ export default class Home extends Vue {
   @Inject('loginService')
   private loginService: () => LoginService;
 
-  // jhcc-custom
   public openLogin(): void {
-    if (this.$store.getters.activeProfiles.includes('oauth2')) {
-      this.loginService().login();
-    } else {
-      this.loginService().openLogin((<any>this).$root);
-    }
+    this.loginService().openLogin((<any>this).$root);
   }
 
   public get authenticated(): boolean {
@@ -21,6 +16,6 @@ export default class Home extends Vue {
   }
 
   public get username(): string {
-    return this.$store.getters.account ? this.$store.getters.account.login : '';
+    return this.$store.getters.account?.login ?? '';
   }
 }

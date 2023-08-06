@@ -24,17 +24,6 @@ import {
   BFormDatepicker,
   BInputGroup,
   BInputGroupPrepend,
-  // jhcc-custom begin
-  BImg,
-  BNav,
-  BSidebar,
-  VBToggle,
-  BFormSelect,
-  BCard,
-  BContainer,
-  BRow,
-  BCol,
-  // jhcc-custom end
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -64,16 +53,4 @@ export function initBootstrapVue(vue) {
   vue.component('b-form-datepicker', BFormDatepicker);
   vue.component('b-input-group', BInputGroup);
   vue.component('b-input-group-prepend', BInputGroupPrepend);
-  // jhcc-custom begin
-  vue.component('b-button', BButton);
-  vue.directive('bToggle', VBToggle);
-  vue.component('b-sidebar', BSidebar);
-  vue.component('b-img', BImg);
-  vue.component('b-nav', BNav);
-  vue.component('b-select', BFormSelect);
-  vue.component('b-card', BCard);
-  vue.component('b-container', BContainer);
-  vue.component('b-row', BRow);
-  vue.component('b-col', BCol);
-  // jhcc-custom end
 }

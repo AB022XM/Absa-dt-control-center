@@ -1,60 +1,24 @@
 # jhipsterControlCenter
 
-This application was generated using JHipster 7.0.0-beta.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1](https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1).
+This application was generated using JHipster 7.9.3, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v7.9.3](https://www.jhipster.tech/documentation-archive/v7.9.3).
 
-## JHipster Control Center
+## Project Structure
 
-[![Application CI][github-application-ci]][github-actions] [![Docker Pulls][docker-hub-pulls]][docker-hub-url]
+Node is required for generation and recommended for development. `package.json` is always generated for a better development experience with prettier, commit hooks, scripts and so on.
 
-[![sonar-quality-gate][sonar-quality-gate]][sonar-url] [![sonar-coverage][sonar-coverage]][sonar-url] [![sonar-bugs][sonar-bugs]][sonar-url] [![sonar-vulnerabilities][sonar-vulnerabilities]][sonar-url]
+In the project root, JHipster generates configuration files for tools like git, prettier, eslint, husky, and others that are well known and you can find references in the web.
 
-### Specific Spring profiles
+`/src/*` structure follows default Java structure.
 
-In order to work properly, the Control Center has to be started with a spring profile corresponding to a Spring Cloud discovery backend
+- `.yo-rc.json` - Yeoman configuration file
+  JHipster configuration is stored in this file at `generator-jhipster` key. You may find `generator-jhipster-*` for specific blueprints configuration.
+- `.yo-resolve` (optional) - Yeoman conflict resolver
+  Allows to use a specific action when conflicts are found skipping prompts for files that matches a pattern. Each line should match `[pattern] [action]` with pattern been a [Minimatch](https://github.com/isaacs/minimatch#minimatch) pattern and action been one of skip (default if ommited) or force. Lines starting with `#` are considered comments and are ignored.
+- `.jhipster/*.json` - JHipster entity configuration files
 
-- `eureka`: Connect to an Eureka server and fetch its registered instances, configured in `application-eureka.yml`
-- `consul`: Connect to a Consul server and fetch its registered instances, configured in `application-consul.yml`
-- `static`: Uses a static list of instances provided as properties, configured in `application-static.yml`
-- `kubernetes`: To be developed
-
-### Control Center API
-
-- `localhost:7419/api/services/instances`: get registered instances
-- `localhost:7419/management/gateway/routes`: get Spring Cloud Gateway routes
-- `localhost:7419/gateway/<serviceName>/<instanceName>/<urlPath>`: proxy request to `instanceName`'s urlPath.
-  For example, when using Eureka, it would look like: `localhost:7419/gateway/eurekaservice1/eurekaservice1:3d38fb89771e502111b495064d739ef8/management/info`
-
-## Running locally
-
-### Step 1 : Run server used by Spring Cloud discovery backend
-
-Eureka and Consul docker-compose files exist under `src/main/docker` to ease testing the project.
-
-- for Consul : run `docker-compose -f src/main/docker/consul.yml up -d`
-- for Eureka : run `docker-compose -f src/main/docker/jhipster-registry.yml up -d`
-- Otherwise, to use a static list of instances, you can directly go to the next step.
-
-### Step 2 : Choose your authentication profile
-
-There is 2 types of authentication.
-
-- JWT : This is the default authentication, if you choose this one, you have to do nothing.
-- OAuth2 : To use OAuth2 authentication, you have to launch Keycloak. Run `docker-compose -f src/main/docker/keycloak.yml up -d`
-
-### Step 3 : Run the cloned project
-
-Run the Control Center according to the specific spring profiles you want, here are some examples:
-
-- For development with JWT and Consul, run ./mvnw -Dspring.profiles.active=consul,dev
-- For development with JWT and Eureka, run./mvnw -Dspring.profiles.active=eureka,dev
-- For development with JWT and a static list of instances, run ./mvnw -Dspring.profiles.active=static,dev
-- For development with OAuth2 and Consul, run ./mvnw -Dspring.profiles.active=consul,dev,oauth2
-- For development with OAuth2 and Eureka, run ./mvnw -Dspring.profiles.active=eureka,dev,oauth2
-- To just start in development run ./mvnw and in another terminal run npm start for hot reload of client side code
-
-## Running from Docker
-
-A container image has been made available on Docker hub.To use it, run `docker pull jhipster/jhipster-control-center` and `docker run -d --name jhcc -p 7419:7419 jhipster/jhipster-control-center:latest`
+- `npmw` - wrapper to use locally installed npm.
+  JHipster installs Node and npm locally using the build tool by default. This wrapper makes sure npm is installed locally and uses it avoiding some differences different versions can cause. By using `./npmw` instead of the traditional `npm` you can configure a Node-less environment to develop or test your application.
+- `/src/main/docker` - Docker configurations for the application and services that the application depends on
 
 ## Development
 
@@ -67,7 +31,7 @@ After installing Node, you should be able to run the following command to instal
 You will only need to run this command when dependencies change in [package.json](package.json).
 
 ```
-    npm install
+npm install
 ```
 
 We use npm scripts and [Webpack][] as our build system.
@@ -109,19 +73,27 @@ Note: [Workbox](https://developers.google.com/web/tools/workbox/) powers JHipste
 For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
 
 ```
-    npm install --save --save-exact leaflet
+npm install --save --save-exact leaflet
 ```
 
 To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
 
 ```
-    npm install --save-dev --save-exact @types/leaflet
+npm install --save-dev --save-exact @types/leaflet
 ```
 
 Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
 Note: There are still a few other things remaining to do for Leaflet that we won't detail here.
 
 For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
+
+### JHipster Control Center
+
+JHipster Control Center can help you manage and control your application(s). You can start a local control center server (accessible on http://localhost:7419) with:
+
+```
+docker-compose -f src/main/docker/jhipster-control-center.yml up
+```
 
 ## Building for production
 
@@ -168,6 +140,15 @@ Unit tests are run by [Jest][]. They're located in [src/test/javascript/](src/te
 npm test
 ```
 
+UI end-to-end tests are powered by [Cypress][]. They're located in [src/test/javascript/cypress](src/test/javascript/cypress)
+and can be run by starting Spring Boot in one terminal (`./mvnw spring-boot:run`) and running the tests (`npm run e2e`) in a second one.
+
+#### Lighthouse audits
+
+You can execute automated [lighthouse audits][https://developers.google.com/web/tools/lighthouse/] with [cypress audits][https://github.com/mfrachet/cypress-audit] by running `npm run e2e:cypress:audits`.
+You should only run the audits when your application is packaged with the production profile.
+The lighthouse report is created in `target/cypress/lhreport.html`
+
 For more information, refer to the [Running tests page][].
 
 ### Code quality
@@ -204,7 +185,13 @@ You can also fully dockerize your application and all the services that it depen
 To achieve this, first build a docker image of your app by running:
 
 ```
-./mvnw -Pprod verify jib:dockerBuild
+npm run java:docker
+```
+
+Or build a arm64 docker image when using an arm64 processor os like MacOS with M1 processor family running:
+
+```
+npm run java:docker:arm64
 ```
 
 Then run:
@@ -213,6 +200,8 @@ Then run:
 docker-compose -f src/main/docker/app.yml up -d
 ```
 
+When running Docker Desktop on MacOS Big Sur or later, consider enabling experimental `Use the new Virtualization framework` for better processing performance ([disk access performance is worse](https://github.com/docker/roadmap/issues/7)).
+
 For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
 
 ## Continuous Integration (optional)
@@ -220,25 +209,18 @@ For more information refer to [Using Docker and Docker-Compose][], this page als
 To configure CI for your project, run the ci-cd sub-generator (`jhipster ci-cd`), this will let you generate configuration files for a number of Continuous Integration systems. Consult the [Setting up Continuous Integration][] page for more information.
 
 [jhipster homepage and latest documentation]: https://www.jhipster.tech
-[jhipster 7.0.0-beta.1 archive]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1
-[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/development/
-[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/docker-compose
-[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/production/
-[running tests page]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/running-tests/
-[code quality page]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/code-quality/
-[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v7.0.0-beta.1/setting-up-ci/
+[jhipster 7.9.3 archive]: https://www.jhipster.tech/documentation-archive/v7.9.3
+[using jhipster in development]: https://www.jhipster.tech/documentation-archive/v7.9.3/development/
+[using docker and docker-compose]: https://www.jhipster.tech/documentation-archive/v7.9.3/docker-compose
+[using jhipster in production]: https://www.jhipster.tech/documentation-archive/v7.9.3/production/
+[running tests page]: https://www.jhipster.tech/documentation-archive/v7.9.3/running-tests/
+[code quality page]: https://www.jhipster.tech/documentation-archive/v7.9.3/code-quality/
+[setting up continuous integration]: https://www.jhipster.tech/documentation-archive/v7.9.3/setting-up-ci/
 [node.js]: https://nodejs.org/
+[npm]: https://www.npmjs.com/
 [webpack]: https://webpack.github.io/
 [browsersync]: https://www.browsersync.io/
 [jest]: https://facebook.github.io/jest/
+[cypress]: https://www.cypress.io/
 [leaflet]: https://leafletjs.com/
 [definitelytyped]: https://definitelytyped.org/
-[github-actions]: https://github.com/jhipster/jhipster-control-center/actions
-[github-application-ci]: https://github.com/jhipster/jhipster-control-center/workflows/Application%20CI/badge.svg
-[sonar-url]: https://sonarcloud.io/dashboard?id=jhipster_jhipster-control-center
-[sonar-quality-gate]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=alert_status
-[sonar-coverage]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=coverage
-[sonar-bugs]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=bugs
-[sonar-vulnerabilities]: https://sonarcloud.io/api/project_badges/measure?project=jhipster_jhipster-control-center&metric=vulnerabilities
-[docker-hub-url]: https://hub.docker.com/r/jhipster/jhipster-control-center
-[docker-hub-pulls]: https://img.shields.io/docker/pulls/jhipster/jhipster-control-center.svg

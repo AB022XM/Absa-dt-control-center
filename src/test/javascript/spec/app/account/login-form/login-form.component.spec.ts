@@ -2,7 +2,7 @@ import { shallowMount, createLocalVue, Wrapper } from '@vue/test-utils';
 import axios from 'axios';
 import sinon from 'sinon';
 import AccountService from '@/account/account.service';
-import router from '@/router';
+import VueRouter from 'vue-router';
 
 import * as config from '@/shared/config/config';
 import LoginForm from '@/account/login-form/login-form.vue';
@@ -16,11 +16,6 @@ localVue.component('b-form-input', {});
 localVue.component('b-form-group', {});
 localVue.component('b-form-checkbox', {});
 localVue.component('b-link', {});
-const mockedCookie = {
-  get: jest.fn(() => {
-    return 'token';
-  }),
-};
 
 config.initVueApp(localVue);
 const store = config.initVueXStore(localVue);
@@ -42,7 +37,7 @@ describe('LoginForm Component', () => {
       store,
       localVue,
       provide: {
-        accountService: () => new AccountService(store, mockedCookie, router),
+        accountService: () => new AccountService(store, new VueRouter()),
       },
     });
     loginForm = wrapper.vm;

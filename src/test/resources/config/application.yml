@@ -14,8 +14,6 @@
 # ===================================================================
 
 spring:
-  profiles:
-    active: 'static'
   application:
     name: jhipsterControlCenter
   jackson:
@@ -41,41 +39,9 @@ spring:
     scheduling:
       thread-name-prefix: jhipster-control-center-scheduling-
       pool:
-        size: 1
+        size: 20
   thymeleaf:
     mode: HTML
-  autoconfigure:
-    exclude:
-      # Disable Eureka autoconfigurations
-      - org.springframework.cloud.netflix.eureka.config.EurekaDiscoveryClientConfigServiceAutoConfiguration
-      - org.springframework.cloud.netflix.eureka.EurekaClientAutoConfiguration
-      # Disable Consul autoconfigurations
-      - org.springframework.cloud.consul.serviceregistry.ConsulAutoServiceRegistrationAutoConfiguration
-      - org.springframework.cloud.consul.serviceregistry.ConsulServiceRegistryAutoConfiguration
-      - org.springframework.cloud.consul.ConsulAutoConfiguration
-      - org.springframework.cloud.consul.discovery.ConsulCatalogWatchAutoConfiguration
-      # Disable Kubernetes autoconfigurations
-      - org.springframework.cloud.kubernetes.KubernetesAutoConfiguration
-      - org.springframework.cloud.kubernetes.discovery.KubernetesCatalogWatchAutoConfiguration
-      - org.springframework.cloud.kubernetes.discovery.reactive.KubernetesReactiveDiscoveryClientAutoConfiguration
-      - org.springframework.cloud.kubernetes.discovery.KubernetesDiscoveryClientAutoConfiguration
-  cloud:
-    kubernetes:
-      enabled: false
-      discovery:
-        enabled: false
-    consul:
-      enabled: false
-    discovery:
-      client:
-        simple:
-          instances:
-            service-test:
-              - uri: http://localhost:8081
-                instance-id: instance-test
-eureka:
-  client:
-    enabled: false
 
 server:
   port: 10344
@@ -86,10 +52,12 @@ server:
 #
 # Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
-
 jhipster:
   clientApp:
     name: 'jhipsterControlCenterApp'
+  mail:
+    from: jhipsterControlCenter@localhost.com
+    base-url: http://127.0.0.1:8080
   logging:
     # To test json console appender
     use-json-format: false
@@ -105,6 +73,7 @@ jhipster:
         base64-secret: MDc2YTJkMGVmMTc3ZjQ3MjgwNjVkMDRhYmE1MThmZmNlZGMyMjgzNjgxMTMyZGY3MzlhOTA1Mjk1NzUwODgyOTZhODM1ZTYyZmI5YmJjZWVkNjVhZWM5NDgzMzU2OWZkYzUzNjVkYTNiMTIxZTlhMWRkYjJhMTg2ZWJmMzgxMjQ=
         # Token is valid 24 hours
         token-validity-in-seconds: 86400
+
 # ===================================================================
 # Application specific properties
 # Add your own application properties here, see the ApplicationProperties class
@@ -115,3 +84,7 @@ jhipster:
 # ===================================================================
 
 # application:
+management:
+  health:
+    mail:
+      enabled: false

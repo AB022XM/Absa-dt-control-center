@@ -1,18 +1,23 @@
 import { Component, Inject, Vue } from 'vue-property-decorator';
-import { VERSION } from '@/constants';
 import LoginService from '@/account/login.service';
 import AccountService from '@/account/account.service';
 
-@Component
+import EntitiesMenu from '@/entities/entities-menu.vue';
+
+@Component({
+  components: {
+    'entities-menu': EntitiesMenu,
+  },
+})
 export default class JhiNavbar extends Vue {
   @Inject('loginService')
   private loginService: () => LoginService;
 
   @Inject('accountService') private accountService: () => AccountService;
-  public version = VERSION ? 'v' + VERSION : '';
+  public version = 'v' + VERSION;
   private currentLanguage = this.$store.getters.currentLanguage;
   private languages: any = this.$store.getters.languages;
-  private hasAnyAuthorityValue = false;
+  private hasAnyAuthorityValues = {};
 
   created() {}
 
@@ -23,40 +28,18 @@ export default class JhiNavbar extends Vue {
     });
   }
 
-  // jhcc-custom
-  public logout(): void {
-    if (this.$store.getters.activeProfiles.includes('oauth2')) {
-      this.loginService()
-        .logout()
-        .then(response => {
-          this.$store.commit('logout');
-          this.$router.push('/');
-          const data = response.data;
-          let logoutUrl = data.logoutUrl;
-          // if Keycloak, uri has protocol/openid-connect/token
-          if (logoutUrl.indexOf('/protocol') > -1) {
-            logoutUrl = logoutUrl + '?redirect_uri=' + window.location.origin;
-          } else {
-            // Okta
-            logoutUrl = logoutUrl + '?id_token_hint=' + data.idToken + '&post_logout_redirect_uri=' + window.location.origin;
-          }
-          window.location.href = logoutUrl;
-        });
-    } else {
-      localStorage.removeItem('jhi-authenticationToken');
-      sessionStorage.removeItem('jhi-authenticationToken');
-      this.$store.commit('logout');
-      this.$router.push('/', () => {});
+  public logout(): Promise<any> {
+    localStorage.removeItem('jhi-authenticationToken');
+    sessionStorage.removeItem('jhi-authenticationToken');
+    this.$store.commit('logout');
+    if (this.$route.path !== '/') {
+      return this.$router.push('/');
     }
+    return Promise.resolve(this.$router.currentRoute);
   }
 
-  // jhcc-custom
   public openLogin(): void {
-    if (this.$store.getters.activeProfiles.includes('oauth2')) {
-      this.loginService().login();
-    } else {
-      this.loginService().openLogin((<any>this).$root);
-    }
+    this.loginService().openLogin((<any>this).$root);
   }
 
   public get authenticated(): boolean {
@@ -67,9 +50,11 @@ export default class JhiNavbar extends Vue {
     this.accountService()
       .hasAnyAuthorityAndCheckAuth(authorities)
       .then(value => {
-        this.hasAnyAuthorityValue = value;
+        if (this.hasAnyAuthorityValues[authorities] !== value) {
+          this.hasAnyAuthorityValues = { ...this.hasAnyAuthorityValues, [authorities]: value };
+        }
       });
-    return this.hasAnyAuthorityValue;
+    return this.hasAnyAuthorityValues[authorities] ?? false;
   }
 
   public get openAPIEnabled(): boolean {
